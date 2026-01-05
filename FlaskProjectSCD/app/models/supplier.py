@@ -16,9 +16,6 @@ class Supplier(db.Model):
     address = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     
-    # Relationship with products
-    products = db.relationship('Product', backref='supplier', lazy='dynamic')
-    
     def __repr__(self):
         return f'<Supplier {self.supplier_name}>'
     
@@ -33,8 +30,5 @@ class Supplier(db.Model):
             'address': self.address,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
-        
-        if include_products_count:
-            data['products_count'] = self.products.count()
         
         return data
