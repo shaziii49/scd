@@ -22,7 +22,7 @@ def get_suppliers():
         else:
             suppliers, total = supplier_service.get_all_suppliers(page, per_page)
         
-        suppliers_data = [s.to_dict(include_products_count=True) for s in suppliers]
+        suppliers_data = [s.to_dict() for s in suppliers]
         
         return ResponseHandler.paginated(
             suppliers_data, total, page, per_page,
@@ -43,7 +43,7 @@ def get_supplier(supplier_id):
             return ResponseHandler.not_found("Supplier not found")
         
         return ResponseHandler.success(
-            supplier.to_dict(include_products_count=True),
+            supplier.to_dict(),
             "Supplier retrieved successfully"
         )
     

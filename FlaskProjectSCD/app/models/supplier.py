@@ -19,7 +19,7 @@ class Supplier(db.Model):
     def __repr__(self):
         return f'<Supplier {self.supplier_name}>'
     
-    def to_dict(self, include_products_count=False):
+    def to_dict(self):
         """Convert supplier to dictionary"""
         data = {
             'supplier_id': self.supplier_id,
