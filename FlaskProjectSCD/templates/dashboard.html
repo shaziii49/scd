@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Product Management System{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3"><i class="fas fa-dashboard" style="color: white !important;"></i> Dashboard</h1>
+        <div>
+            <span class="badge bg-primary" id="currentDate"></span>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Total Products</h6>
+                            <h2 class="mb-0" id="totalProducts">0</h2>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-boxes fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Low Stock Items</h6>
+                            <h2 class="mb-0 text-warning" id="lowStockCount">0</h2>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-exclamation-triangle fa-2x text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Categories</h6>
+                            <h2 class="mb-0" id="totalCategories">0</h2>
+                        </div>
+                        <div class="bg-success bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-tags fa-2x text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Inventory Value</h6>
+                            <h2 class="mb-0" id="inventoryValue">$0</h2>
+                        </div>
+                        <div class="bg-info bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-dollar-sign fa-2x text-info"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Recent Products -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-box"></i> Recent Products</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>SKU</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentProductsTable">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Alert -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-exclamation-circle text-warning"></i> Low Stock Alert</h5>
+                </div>
+                <div class="card-body">
+                    <div id="lowStockList">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // API_BASE_URL is already defined in main.js
+    const token = localStorage.getItem('firebase_token');
+
+    // Display current date
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    // Fetch dashboard statistics
+    async function loadDashboardData() {
+        try {
+            // Get total products
+            const productsResponse = await fetch(`${API_BASE_URL}/products?per_page=5`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const productsData = await productsResponse.json();
+
+            if (productsData.success) {
+                document.getElementById('totalProducts').textContent = productsData.pagination.total;
+                displayRecentProducts(productsData.data);
+            }
+
+            // Get low stock products
+            const lowStockResponse = await fetch(`${API_BASE_URL}/products/low-stock`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const lowStockData = await lowStockResponse.json();
+
+            if (lowStockData.success) {
+                document.getElementById('lowStockCount').textContent = lowStockData.data.length;
+                displayLowStock(lowStockData.data);
+            }
+
+            // Get inventory value
+            const valueResponse = await fetch(`${API_BASE_URL}/products/inventory-value`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const valueData = await valueResponse.json();
+
+            if (valueData.success) {
+                document.getElementById('inventoryValue').textContent =
+                    '$' + valueData.data.inventory_value.toFixed(2);
+            }
+
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+        }
+    }
+
+    function displayRecentProducts(products) {
+        const tbody = document.getElementById('recentProductsTable');
+
+        if (products.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No products found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = products.map(product => `
+            <tr>
+                <td><strong>${product.product_name}</strong></td>
+                <td><span class="badge bg-secondary">${product.sku}</span></td>
+                <td>${product.category ? product.category.category_name : 'N/A'}</td>
+                <td>${product.quantity_in_stock}</td>
+                <td>$${product.price.toFixed(2)}</td>
+                <td>
+                    ${product.quantity_in_stock <= product.reorder_level
+                        ? '<span class="badge bg-warning">Low Stock</span>'
+                        : '<span class="badge bg-success">In Stock</span>'}
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function displayLowStock(products) {
+        const container = document.getElementById('lowStockList');
+
+        if (products.length === 0) {
+            container.innerHTML = '<p class="text-muted text-center">All products are well stocked!</p>';
+            return;
+        }
+
+        container.innerHTML = products.map(product => `
+            <div class="alert alert-warning mb-2" role="alert">
+                <strong>${product.product_name}</strong><br>
+                <small>Stock: ${product.quantity_in_stock} (Reorder: ${product.reorder_level})</small>
+            </div>
+        `).join('');
+    }
+
+    // Load data on page load
+    loadDashboardData();
+</script>
+{% endblock %}

@@ -1,0 +1,417 @@
+/* ================================
+   Product Management System (Dark Shell + Light Surfaces)
+   Drop-in replacement for your current CSS
+   ================================ */
+
+/* Theme Tokens */
+:root {
+    --primary-color: #3b82f6;
+    --secondary-color: #06b6d4;
+    --accent-color: #7c3aed;
+
+    --success-color: #22c55e;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --info-color: #38bdf8;
+
+    /* Dark background */
+    --app-bg: #070b18;
+    --app-bg-2: #0b1024;
+    --app-border: rgba(255,255,255,0.10);
+
+    /* Light surfaces */
+    --surface: #ffffff;
+    --surface-2: #f6f7fb;
+    --surface-3: #eef2ff;
+
+    /* Text */
+    --text: #0f172a;
+    --muted: #64748b;
+
+    /* Shadows & radius */
+    --radius-lg: 16px;
+    --radius-md: 12px;
+
+    --shadow-sm: 0 8px 22px rgba(2, 6, 23, 0.08);
+    --shadow-md: 0 18px 55px rgba(2, 6, 23, 0.16);
+
+    --ring: 0 0 0 0.22rem rgba(59, 130, 246, 0.18);
+}
+
+/* ================================
+   General Styles
+   ================================ */
+html, body { height: 100%; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e5e7eb;
+
+    /* Dark gradient background similar to your samples */
+    background:
+        radial-gradient(1200px 700px at 12% 12%, rgba(59, 130, 246, 0.22), transparent 55%),
+        radial-gradient(1100px 800px at 92% 20%, rgba(6, 182, 212, 0.16), transparent 60%),
+        radial-gradient(1000px 700px at 35% 92%, rgba(124, 58, 237, 0.12), transparent 55%),
+        linear-gradient(180deg, var(--app-bg) 0%, var(--app-bg-2) 100%);
+}
+
+/* Make main content readable on dark shell */
+.container, .container-fluid {
+    color: var(--text);
+}
+
+/* Page titles on dark background */
+h1, h2, h3, h4, h5, h6 {
+  
+}
+
+/* Main page headings */
+h1.h3 {
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+
+/* Utility: glass panels if you ever need them */
+.glass {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(14px);
+}
+
+/* ================================
+   Navbar (dark + modern)
+   ================================ */
+.navbar {
+    background: rgba(7, 11, 24, 0.74) !important;
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--app-border);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+    height: 100px;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: 0.2px;
+    color: #ffffff !important;
+}
+
+.navbar .nav-link {
+    color: rgba(255,255,255,0.82) !important;
+    border-radius: 12px;
+    padding: .55rem .8rem;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+    color: #ffffff !important;
+    background: rgba(255,255,255,0.08);
+}
+
+.navbar .nav-link.active {
+    background: rgba(59, 130, 246, 0.18);
+    border: 1px solid rgba(59, 130, 246, 0.22);
+    color: #ffffff !important;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    border-radius: 14px;
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    box-shadow: var(--shadow-md);
+}
+
+/* ================================
+   Cards (light surfaces)
+   ================================ */
+.card {
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    font-weight: 700;
+    background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    color: var(--text);
+}
+
+.card-body { color: var(--text); }
+
+/* ================================
+   Stats Cards (Dashboard)
+   ================================ */
+.stats-card {
+    background: var(--surface);
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: var(--shadow-sm);
+}
+
+.stats-card .text-muted { color: var(--muted) !important; }
+
+.stats-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 10px 26px rgba(2, 6, 23, 0.10);
+}
+
+/* If your template uses bg-* classes for icons, make them softer */
+.bg-primary {
+    background: rgba(59, 130, 246, 0.16) !important;
+    
+}
+.bg-success { background: rgba(34,197,94,0.14) !important; color: #15803d !important; }
+.bg-warning { background: rgba(245,158,11,0.16) !important; color: #b45309 !important; }
+.bg-info    { background: rgba(56,189,248,0.16) !important; color: #0284c7 !important; }
+.bg-danger  { background: rgba(239,68,68,0.16) !important; color: #b91c1c !important; }
+
+/* ================================
+   Buttons (gradient primary)
+   ================================ */
+.btn {
+    border-radius: 12px;
+    padding: 0.55rem 1rem;
+    font-weight: 650;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #4f46e5 55%, var(--secondary-color) 100%);
+    border: none;
+    box-shadow: 0 12px 28px rgba(59,130,246,0.22);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.02);
+    box-shadow: 0 16px 36px rgba(59,130,246,0.28);
+}
+
+.btn-secondary {
+    background: var(--surface-2);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    color: var(--text);
+}
+
+.btn-secondary:hover {
+    background: var(--surface-3);
+    transform: translateY(-1px);
+}
+
+.btn-sm {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.875rem;
+    border-radius: 10px;
+}
+
+/* ================================
+   Tables (light, modern)
+   ================================ */
+.table {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.table thead th {
+    background: var(--surface-2);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.10);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+}
+
+.table tbody td {
+    color: var(--text);
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    transition: background-color 0.18s ease;
+}
+
+.table tbody tr:hover {
+    background: rgba(59, 130, 246, 0.06);
+}
+
+/* ================================
+   Forms (clean focus ring)
+   ================================ */
+.form-control, .form-select {
+    border-radius: 12px;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    padding: 0.55rem 0.85rem;
+    background: var(--surface);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: rgba(59, 130, 246, 0.55);
+    box-shadow: var(--ring);
+}
+
+.form-label {
+    font-weight: 650;
+    margin-bottom: 0.5rem;
+    color: var(--muted);
+}
+
+/* ================================
+   Badges
+   ================================ */
+.badge {
+    padding: 0.38em 0.68em;
+    font-weight: 650;
+    border-radius: 10px;
+}
+
+/* Make status badges nicer if you use them (optional) */
+.badge.bg-success { background: rgba(34,197,94,0.14) !important; color: #15803d !important; border: 1px solid rgba(34,197,94,0.20); }
+.badge.bg-danger  { background: rgba(239,68,68,0.14) !important; color: #b91c1c !important; border: 1px solid rgba(239,68,68,0.20); }
+.badge.bg-warning { background: rgba(245,158,11,0.16) !important; color: #b45309 !important; border: 1px solid rgba(245,158,11,0.22); }
+.badge.bg-info    { background: rgba(56,189,248,0.16) !important; color: #0284c7 !important; border: 1px solid rgba(56,189,248,0.22); }
+
+/* ================================
+   Alerts
+   ================================ */
+.alert {
+    border-radius: 14px;
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ================================
+   Modal
+   ================================ */
+.modal-content {
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    box-shadow: var(--shadow-md);
+}
+
+.modal-header {
+    background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.10);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* ================================
+   Pagination
+   ================================ */
+.pagination { margin-top: 1rem; }
+
+.page-link {
+    color: var(--primary-color);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    margin: 0 3px;
+    border-radius: 12px;
+}
+
+.page-link:hover {
+    background: rgba(59,130,246,0.12);
+    color: var(--primary-color);
+    border-color: rgba(59,130,246,0.30);
+}
+
+.page-item.active .page-link {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-color: transparent;
+    color: #fff;
+}
+
+/* ================================
+   Loading Spinner
+   ================================ */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* ================================
+   Footer (dark shell)
+   ================================ */
+footer {
+    margin-top: auto;
+    border-top: 1px solid var(--app-border);
+    background: rgba(7, 11, 24, 0.55);
+    color: rgba(255,255,255,0.72);
+}
+
+/* ================================
+   Responsive
+   ================================ */
+@media (max-width: 768px) {
+    .navbar-brand { font-size: 1.05rem; }
+    .card-body { padding: 1rem; }
+    .btn { padding: 0.5rem 0.9rem; font-size: 0.95rem; }
+    .table { font-size: 0.9rem; }
+}
+
+/* ================================
+   Scrollbar (dark theme)
+   ================================ */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.06); }
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+/* ================================
+   Animation
+   ================================ */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeIn 0.5s ease-in; }
+
+/* ================================
+   Print Styles
+   ================================ */
+@media print {
+    .navbar, .btn, .pagination, footer { display: none !important; }
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6 !important;
+    }
+}
+
+
+.heading{
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    margin-left: 30px;
+}
+
+.main-heading{
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 36px;
+    margin-left: 30px;
+}
