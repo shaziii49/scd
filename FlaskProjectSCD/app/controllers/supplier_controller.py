@@ -1,14 +1,12 @@
 from flask import Blueprint, request
 from ..services.supplier_service import SupplierService
 from ..utils.response_handler import ResponseHandler
-from ..middleware.auth_middleware import token_required, role_required
 
 supplier_bp = Blueprint('suppliers', __name__, url_prefix='/api/suppliers')
 supplier_service = SupplierService()
 
 
 @supplier_bp.route('', methods=['GET'])
-@token_required
 def get_suppliers():
     """
     Get all suppliers with pagination
@@ -24,7 +22,7 @@ def get_suppliers():
         else:
             suppliers, total = supplier_service.get_all_suppliers(page, per_page)
         
-        suppliers_data = [s.to_dict(include_products_count=True) for s in suppliers]
+        suppliers_data = [s.to_dict() for s in suppliers]
         
         return ResponseHandler.paginated(
             suppliers_data, total, page, per_page,
@@ -36,7 +34,6 @@ def get_suppliers():
 
 
 @supplier_bp.route('/<int:supplier_id>', methods=['GET'])
-@token_required
 def get_supplier(supplier_id):
     """Get supplier by ID"""
     try:
@@ -46,7 +43,7 @@ def get_supplier(supplier_id):
             return ResponseHandler.not_found("Supplier not found")
         
         return ResponseHandler.success(
-            supplier.to_dict(include_products_count=True),
+            supplier.to_dict(),
             "Supplier retrieved successfully"
         )
     
@@ -55,7 +52,6 @@ def get_supplier(supplier_id):
 
 
 @supplier_bp.route('', methods=['POST'])
-@role_required('admin', 'manager')
 def create_supplier():
     """
     Create a new supplier
@@ -88,7 +84,6 @@ def create_supplier():
 
 
 @supplier_bp.route('/<int:supplier_id>', methods=['PUT'])
-@role_required('admin', 'manager')
 def update_supplier(supplier_id):
     """Update supplier"""
     try:
@@ -111,7 +106,6 @@ def update_supplier(supplier_id):
 
 
 @supplier_bp.route('/<int:supplier_id>', methods=['DELETE'])
-@role_required('admin')
 def delete_supplier(supplier_id):
     """Delete supplier"""
     try:

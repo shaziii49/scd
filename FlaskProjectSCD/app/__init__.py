@@ -33,19 +33,17 @@ def create_app(config_name=None):
     CORS(app)
 
     # Register blueprints
-    from .controllers.auth_controller import auth_bp
-    from .controllers.product_controller import product_bp
-    from .controllers.web_controller import web_bp
-    from .controllers.category_controller import category_bp
     from .controllers.supplier_controller import supplier_bp
-    from .controllers.sales_controller import sales_bp
 
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(product_bp)
-    app.register_blueprint(web_bp)
-    app.register_blueprint(category_bp)
     app.register_blueprint(supplier_bp)
-    app.register_blueprint(sales_bp)
+    
+    # Add simple web route for home page
+    from flask import render_template
+    
+    @app.route('/')
+    def index():
+        """Home page - show suppliers"""
+        return render_template('suppliers.html')
 
     # Create database tables
     with app.app_context():
